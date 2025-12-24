@@ -1,13 +1,14 @@
 import express from 'express';
 const router = express.Router();
-import ctrl from '../controllers/comment.js';
+import ctrl from '../controllers/tag.js';
 import { checkJwt } from '../middleware/jwt.js';
 import { requireRole } from '../middleware/role.js';
 
 
-router.get('/:articleId', ctrl.getComments);
-router.post('/:articleId', checkJwt,
-  requireRole('user'),ctrl.addComment)
+router.get('/', ctrl.listTags);
+router.post('/', checkJwt,
+  requireRole('user'),ctrl.createTag)
+router.get('/:id', ctrl.getTag);
 
 
 export default router;

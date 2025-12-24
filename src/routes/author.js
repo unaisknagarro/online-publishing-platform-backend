@@ -1,6 +1,7 @@
-const router = require('express').Router();
-const ctrl = require('../controllers/author');
+import express from 'express';
+const router = express.Router();
+import ctrl from '../controllers/author.js';
 
 router.get('/', ctrl.listAuthors);
 
-module.exports = router;
+export default router;

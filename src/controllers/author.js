@@ -1,6 +1,10 @@
-const User = require('../models/User');
+import User from '../models/User.js';
 
-exports.listAuthors = async (req, res) => {
-const authors = await User.find().select('name photo bio');
-res.json(authors);
+const listAuthors = async (req, res) => {
+    const authors = await User.find().select('name photo bio');
+    res.json(authors);
+};
+
+export default {
+    listAuthors
 };

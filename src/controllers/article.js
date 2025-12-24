@@ -1,44 +1,50 @@
-const Article = require('../models/Article');
+import Article from '../models/Article.js';
 
 
-exports.listArticles = async (req, res) => {
-const { page = 1, limit = 10, search, sort } = req.query;
+const listArticles = async (req, res) => {
+    const { page = 1, limit = 10, search, sort } = req.query;
 
 
-const filter = { status: 'published' };
-if (search) filter.title = { $regex: search, $options: 'i' };
+    const filter = { status: 'published' };
+    if (search) filter.title = { $regex: search, $options: 'i' };
 
 
-let sortQuery = { createdAt: -1 };
-if (sort === 'popular') sortQuery = { views: -1 };
+    let sortQuery = { createdAt: -1 };
+    if (sort === 'popular') sortQuery = { views: -1 };
 
 
-const articles = await Article.find(filter)
-.populate('author', 'name photo')
-.sort(sortQuery)
-.skip((page - 1) * limit)
-.limit(Number(limit));
+    const articles = await Article.find()
+        .populate('author', 'name photo')
+        .sort(sortQuery)
+        .skip((page - 1) * limit)
+        .limit(Number(limit));
 
 
-res.json(articles);
+    res.json(articles);
 };
 
 
-exports.createArticle = async (req, res) => {
-const article = await Article.create({ ...req.body, author: req.user.uid });
-res.status(201).json(article);
+const createArticle = async (req, res) => {
+    const article = await Article.create({ ...req.body, author: req.user.uid });
+    res.status(201).json(article);
 };
 
 
-exports.getArticle = async (req, res) => {
-const article = await Article.findById(req.params.id)
-.populate('author', 'name bio')
-.populate('tags');
+const getArticle = async (req, res) => {
+    const article = await Article.findById(req.params.id)
+        .populate('author', 'name bio')
+        .populate('tags');
 
 
-article.views++;
-await article.save();
+    article.views++;
+    await article.save();
 
 
-res.json(article);
+    res.json(article);
+};
+
+export default {
+    listArticles,
+    createArticle,
+    getArticle
 };

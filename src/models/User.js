@@ -6,6 +6,7 @@ name: String,
 email: String,
 photo: String,
 bio: String,
+role: String
 },{ timestamps: true });
 
 

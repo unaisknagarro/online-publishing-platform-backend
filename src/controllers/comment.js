@@ -1,6 +1,6 @@
-const Comment = require('../models/Comment');
+import Comment from '../models/Comment.js';
 
-exports.addComment = async (req, res) => {
+const addComment = async (req, res) => {
     const comment = await Comment.create({
         article: req.params.articleId,
         user: req.user.uid,
@@ -13,11 +13,16 @@ exports.addComment = async (req, res) => {
 };
 
 
-exports.getComments = async (req, res) => {
+const getComments = async (req, res) => {
     const comments = await Comment.find({ article: req.params.articleId })
         .populate('user', 'name photo')
         .sort({ createdAt: -1 });
 
 
     res.json(comments);
+};
+
+export default {   
+    addComment,
+    getComments 
 };

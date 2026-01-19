@@ -5,9 +5,10 @@ import { checkJwt } from '../middleware/jwt.js';
 import { requireRole } from '../middleware/role.js';
 
 
-router.get('/:articleId', ctrl.getComments);
+router.get('/:articleId', ctrl.getCommentsByArticle);
 router.post('/:articleId', checkJwt,
-  requireRole('user'),ctrl.addComment)
+  requireRole('user'),ctrl.createComment);
+  router.post('/like/:commentId', checkJwt, ctrl.likeComment);
 
 
 export default router;
